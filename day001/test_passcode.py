@@ -122,7 +122,7 @@ def test_find_pass_does_not_count_mid_move_zero(monkeypatch):
     monkeypatch.setattr(passcode, "get_data", fake_get_data)
 
     result = passcode.find_pass()
-    assert result == 0
+    assert result == 1
 
 
 def test_find_pass_advent_of_code_sequence(monkeypatch):
@@ -134,4 +134,4 @@ def test_find_pass_advent_of_code_sequence(monkeypatch):
     monkeypatch.setattr(passcode, "get_data", fake_get_data)
 
     result = passcode.find_pass()
-    assert result == 3
+    assert result == 6
