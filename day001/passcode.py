@@ -71,6 +71,8 @@ def find_pass() -> int:
                     else:
                         spinner.move_right()
                         steps -= 1
+                    if spinner.is_0():
+                        num_zeros.increment()
 
             if direction == "L":
                 while steps > 0:
@@ -80,8 +82,8 @@ def find_pass() -> int:
                     else:
                         spinner.move_left()
                         steps -= 1
-            if spinner.is_0():
-                num_zeros.increment()
+                    if spinner.is_0():
+                        num_zeros.increment()
 
         return num_zeros.get_count()
 
