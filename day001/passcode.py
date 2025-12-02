@@ -60,7 +60,6 @@ def find_pass() -> int:
 
     while True:
         for move in RTTS:
-            # print(move)
             direction = move[0]
             steps = int(move[1:])
 
