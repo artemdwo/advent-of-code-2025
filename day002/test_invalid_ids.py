@@ -73,7 +73,7 @@ def test_find_invalid_ids_advent_case(monkeypatch):
     monkeypatch.setattr(invalid_ids, "get_data", fake_get_data)
 
     result = invalid_ids.find_invalid_ids()
-    expected_sum = 1227775554
+    expected_sum = 4174379265
     assert result == expected_sum
 
 
@@ -190,5 +190,5 @@ def test_find_invalid_ids_no_invalids(monkeypatch):
     monkeypatch.setattr(invalid_ids, "get_data", fake_get_data)
 
     result = invalid_ids.find_invalid_ids()
-    expected_sum = 0
+    expected_sum = 111
     assert result == expected_sum

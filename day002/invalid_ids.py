@@ -35,14 +35,19 @@ def is_invalid(id: int) -> bool:
     s = str(id)
     length = len(s)
 
-    if length % 2 != 0:
-        return False
+    for sub_len in range(1, length // 2 + 1):
+        if length % sub_len != 0:
+            continue  # pattern must divide total length exactly
 
-    half = length // 2
-    left = s[:half]
-    right = s[half:]
+        repetitions = length // sub_len
+        if repetitions < 2:
+            continue  # must repeat at least twice
 
-    return left == right
+        pattern = s[:sub_len]
+        if pattern * repetitions == s:
+            return True
+
+    return False
 
 
 def find_invalid_ids() -> int:
