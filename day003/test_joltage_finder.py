@@ -16,28 +16,16 @@ def test_counter_increments():
 
 
 # find_max_joltage
-def test_find_max_joltage_simple_cases_pos():
-    assert joltage_finder.find_max_joltage("12") == 12
-    assert joltage_finder.find_max_joltage("34") == 34
-    assert joltage_finder.find_max_joltage("56") == 56
-
-
 def test_find_max_joltage_multiple_digits_pos():
-    assert joltage_finder.find_max_joltage("123") == 23
-    assert joltage_finder.find_max_joltage("456") == 56
-    assert joltage_finder.find_max_joltage("789") == 89
-
-
-def test_find_max_joltage_simple_cases_neg():
-    assert joltage_finder.find_max_joltage("12") != 21
-    assert joltage_finder.find_max_joltage("34") != 43
-    assert joltage_finder.find_max_joltage("56") != 65
+    assert joltage_finder.find_max_joltage("987654321111111") == 987654321111
+    assert joltage_finder.find_max_joltage("811111111111119") == 811111111119
+    assert joltage_finder.find_max_joltage("234234234234278") == 434234234278
 
 
 def test_find_max_joltage_multiple_digits_neg():
-    assert joltage_finder.find_max_joltage("123") != 32
-    assert joltage_finder.find_max_joltage("456") != 65
-    assert joltage_finder.find_max_joltage("789") != 98
+    assert joltage_finder.find_max_joltage("987654322111111") != 987654321111
+    assert joltage_finder.find_max_joltage("821111111111119") != 811111111119
+    assert joltage_finder.find_max_joltage("235234234234278") != 434234234278
 
 
 # find_total_joltage
@@ -55,7 +43,7 @@ def test_find_total_joltage_advent_case(monkeypatch):
     monkeypatch.setattr(joltage_finder, "get_data", fake_get_data)
 
     result = joltage_finder.find_total_joltage()
-    expected_sum = 98 + 89 + 78 + 92
+    expected_sum = 987654321111 + 811111111119 + 434234234278 + 888911112111
     assert result == expected_sum
 
 
