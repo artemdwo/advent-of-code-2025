@@ -35,53 +35,39 @@ class Revisor:
 
     def lookaround(self):
         self.neighbours_count = 0
-        if self.grid[self.y_position][self.x_position] == self.a_roll:
-            if (
-                self.y_position - 1 >= 0
-                and self.x_position - 1 >= 0
-                and self.grid[self.y_position - 1][self.x_position - 1] == self.a_roll
-            ):
+        x = self.x_position
+        y = self.y_position
+        if self.grid[y][x] == self.a_roll:
+            if y - 1 >= 0 and x - 1 >= 0 and self.grid[y - 1][x - 1] == self.a_roll:
                 self.neighbours_count += 1
-            if (
-                self.y_position - 1 >= 0
-                and self.grid[self.y_position - 1][self.x_position] == self.a_roll
-            ):
+            if y - 1 >= 0 and self.grid[y - 1][x] == self.a_roll:
                 self.neighbours_count += 1
 
             if (
-                self.y_position + 1 <= self.y_max
-                and self.x_position - 1 >= 0
-                and self.grid[self.y_position + 1][self.x_position - 1] == self.a_roll
+                y + 1 <= self.y_max
+                and x - 1 >= 0
+                and self.grid[y + 1][x - 1] == self.a_roll
             ):
                 self.neighbours_count += 1
-            if (
-                self.x_position - 1 >= 0
-                and self.grid[self.y_position][self.x_position - 1] == self.a_roll
-            ):
+            if x - 1 >= 0 and self.grid[y][x - 1] == self.a_roll:
                 self.neighbours_count += 1
 
             if (
-                self.y_position - 1 >= 0
-                and self.x_position + 1 <= self.x_max
-                and self.grid[self.y_position - 1][self.x_position + 1] == self.a_roll
+                y - 1 >= 0
+                and x + 1 <= self.x_max
+                and self.grid[y - 1][x + 1] == self.a_roll
             ):
                 self.neighbours_count += 1
-            if (
-                self.x_position + 1 <= self.x_max
-                and self.grid[self.y_position][self.x_position + 1] == self.a_roll
-            ):
+            if x + 1 <= self.x_max and self.grid[y][x + 1] == self.a_roll:
                 self.neighbours_count += 1
 
             if (
-                self.y_position + 1 <= self.y_max
-                and self.x_position + 1 <= self.x_max
-                and self.grid[self.y_position + 1][self.x_position + 1] == self.a_roll
+                y + 1 <= self.y_max
+                and x + 1 <= self.x_max
+                and self.grid[y + 1][x + 1] == self.a_roll
             ):
                 self.neighbours_count += 1
-            if (
-                self.y_position + 1 <= self.y_max
-                and self.grid[self.y_position + 1][self.x_position] == self.a_roll
-            ):
+            if y + 1 <= self.y_max and self.grid[y + 1][x] == self.a_roll:
                 self.neighbours_count += 1
         return
 
