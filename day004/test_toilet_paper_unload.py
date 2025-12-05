@@ -1,6 +1,6 @@
 import pytest
-import toilet_paper_unload 
-from toilet_paper_unload import Revisor, find_rolls_to_unload
+import toilet_paper_unload
+from toilet_paper_unload import Revisor, find_rolls_to_unload, find_total_rolls_removed
 
 GRID_TEXT = """\
 ..@@.@@@@.
@@ -102,3 +102,13 @@ def test_find_rolls_to_unload_uses_example_grid(monkeypatch):
 
     result = find_rolls_to_unload()
     assert result == 13
+
+
+def test_find_total_rolls_removed(monkeypatch):
+    def fake_get_data():
+        return make_grid(GRID_TEXT)
+
+    monkeypatch.setattr(toilet_paper_unload, "get_data", fake_get_data)
+
+    result = find_total_rolls_removed()
+    assert result == 43

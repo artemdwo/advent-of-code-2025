@@ -27,75 +27,101 @@ class Revisor:
     def how_many_rools(self) -> int:
         return self.rolls_count
 
-    def move_right(self, steps: int = 1):
-        self.x_position += steps
-
-    def move_down(self, steps: int = 1):
-        self.y_position += steps
-
     def lookaround(self):
         self.neighbours_count = 0
-        x = self.x_position
+
+        if self.grid[self.y_position][self.x_position] != self.a_roll:
+            return
+
         y = self.y_position
-        if self.grid[y][x] == self.a_roll:
-            if y - 1 >= 0 and x - 1 >= 0 and self.grid[y - 1][x - 1] == self.a_roll:
-                self.neighbours_count += 1
-            if y - 1 >= 0 and self.grid[y - 1][x] == self.a_roll:
-                self.neighbours_count += 1
+        x = self.x_position
 
-            if (
-                y + 1 <= self.y_max
-                and x - 1 >= 0
-                and self.grid[y + 1][x - 1] == self.a_roll
-            ):
-                self.neighbours_count += 1
-            if x - 1 >= 0 and self.grid[y][x - 1] == self.a_roll:
-                self.neighbours_count += 1
+        # top row neighbours
+        if y - 1 >= 0 and x - 1 >= 0 and self.grid[y - 1][x - 1] == self.a_roll:
+            self.neighbours_count += 1
+        if y - 1 >= 0 and self.grid[y - 1][x] == self.a_roll:
+            self.neighbours_count += 1
+        if (
+            y - 1 >= 0
+            and x + 1 <= self.x_max
+            and self.grid[y - 1][x + 1] == self.a_roll
+        ):
+            self.neighbours_count += 1
 
-            if (
-                y - 1 >= 0
-                and x + 1 <= self.x_max
-                and self.grid[y - 1][x + 1] == self.a_roll
-            ):
-                self.neighbours_count += 1
-            if x + 1 <= self.x_max and self.grid[y][x + 1] == self.a_roll:
-                self.neighbours_count += 1
+        # same row neighbours
+        if x - 1 >= 0 and self.grid[y][x - 1] == self.a_roll:
+            self.neighbours_count += 1
+        if x + 1 <= self.x_max and self.grid[y][x + 1] == self.a_roll:
+            self.neighbours_count += 1
 
-            if (
-                y + 1 <= self.y_max
-                and x + 1 <= self.x_max
-                and self.grid[y + 1][x + 1] == self.a_roll
-            ):
-                self.neighbours_count += 1
-            if y + 1 <= self.y_max and self.grid[y + 1][x] == self.a_roll:
-                self.neighbours_count += 1
-        return
+        # bottom row neighbours
+        if (
+            y + 1 <= self.y_max
+            and x - 1 >= 0
+            and self.grid[y + 1][x - 1] == self.a_roll
+        ):
+            self.neighbours_count += 1
+        if y + 1 <= self.y_max and self.grid[y + 1][x] == self.a_roll:
+            self.neighbours_count += 1
+        if (
+            y + 1 <= self.y_max
+            and x + 1 <= self.x_max
+            and self.grid[y + 1][x + 1] == self.a_roll
+        ):
+            self.neighbours_count += 1
 
     def is_it_moveable(self) -> bool:
         if self.grid[self.y_position][self.x_position] != self.a_roll:
             self.neighbours_count = 0
             return False
 
-        if self.neighbours_count >= 4:
-            self.neighbours_count = 0
-            return False
+        moveable = self.neighbours_count < 4
         self.neighbours_count = 0
-        return True
+        return moveable
 
 
 def find_rolls_to_unload() -> int:
     grid = get_data()
     revisor = Revisor(grid)
-    while revisor.y_position <= revisor.y_max:
-        while revisor.x_position <= revisor.x_max:
+
+    for y in range(revisor.y_max + 1):
+        for x in range(revisor.x_max + 1):
+            revisor.y_position = y
+            revisor.x_position = x
             revisor.lookaround()
             if revisor.is_it_moveable():
                 revisor.more_rolls()
-            revisor.move_right()
-        revisor.x_position = 0
-        revisor.move_down()
+
     return revisor.how_many_rools()
 
 
+def find_total_rolls_removed() -> int:
+    grid = get_data()
+    revisor = Revisor(grid)
+    total_removed = 0
+
+    while True:
+        removable_positions = []
+
+        for y in range(revisor.y_max + 1):
+            for x in range(revisor.x_max + 1):
+                revisor.y_position = y
+                revisor.x_position = x
+                revisor.lookaround()
+                if revisor.is_it_moveable():
+                    removable_positions.append((y, x))
+
+        if not removable_positions:
+            break
+
+        for y, x in removable_positions:
+            grid[y][x] = revisor.empty_spots
+
+        total_removed += len(removable_positions)
+
+    return total_removed
+
+
 if __name__ == "__main__":
-    print(find_rolls_to_unload())
+    print("Accessible rolls on the first go:", find_rolls_to_unload())
+    print("Total rolls removed over all iterations:", find_total_rolls_removed())
